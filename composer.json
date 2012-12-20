@@ -1,6 +1,6 @@
 {
     "name": "mouf/database.dbstats",
-    "description": "This package provides a set of classes that can be used to create "aggregation" table containing high-level statistics about your database. The DB_Stats can be used to initalize the aggregation tables and automatically create triggers that will update data in real time.",
+    "description": "This package provides a set of classes that can be used to create 'aggregation' table containing high-level statistics about your database. The DB_Stats can be used to initalize the aggregation tables and automatically create triggers that will update data in real time.",
     "keywords": ["aggregation", "statistics", "database", "mouf"],
     "homepage": "https://github.com/thecodingmachine/database.dbstats",
     "type": "mouf-library",
