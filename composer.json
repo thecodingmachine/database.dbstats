@@ -29,7 +29,8 @@
 			"require-admin": [
     			"src/DB_Stats_Admin.php",
     			"src/DB_Stats_ValidatorDescriptor.php"
-    		]
+    		],
+    		"logo": "database.png"
 		}
     }
 }
