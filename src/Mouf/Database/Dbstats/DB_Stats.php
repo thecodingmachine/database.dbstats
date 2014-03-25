@@ -2,6 +2,8 @@
 namespace Mouf\Database\Dbstats;
 
 
+use Mouf\Validator\MoufValidatorInterface;
+
 /**
  * A class specialized in providing aggregated stats for a table using an OLAP like approach.
  * This class provides a way to create automatically a table that will receive aggregated data from a source table.
@@ -11,7 +13,7 @@ namespace Mouf\Database\Dbstats;
  * @ExtendedAction {"name":"Generate stat table", "url":"mouf/dbStatsAdmin/", "default":false}
  * @ExtendedAction {"name":"Recompute stat table", "url":"mouf/dbStatsAdmin/recomputeForm", "default":false}
  */
-class DB_Stats {
+class DB_Stats implements MoufValidatorInterface {
 	
 	/**
 	 * The connection to the database that contains the table we are working on.
@@ -667,6 +669,17 @@ class DB_Stats {
 	 */
 	public function addValue(DB_StatColumn $value) {
 		$this->values[] = $value;
+	}
+	
+	public function validateInstance(){
+		$statsTableName = $this->statsTable;
+		$dbConnection = $this->dbConnection;
+		$result = $dbConnection->checkTableExist($statsTableName);
+		if ($result == false) {
+            return new MoufValidatorResult(MoufValidatorResult::ERROR, "<b>DB_Stats: </b>No stats table '$statsTableName' click here to create it.");
+        } else {
+            return new MoufValidatorResult(MoufValidatorResult::SUCCESS, "<b>DB_Stats: </b>Stats table '$statsTableName' found.");
+        }
 	}
 }
 ?>

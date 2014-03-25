@@ -27,8 +27,7 @@
     "extra": {
 	     "mouf": {
 			"require-admin": [
-    			"src/DB_Stats_Admin.php",
-    			"src/DB_Stats_ValidatorDescriptor.php"
+    			"src/DB_Stats_Admin.php"
     		],
     		"logo": "database.png"
 		}

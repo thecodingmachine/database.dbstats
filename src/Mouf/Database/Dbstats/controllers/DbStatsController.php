@@ -1,5 +1,7 @@
 <?php
 namespace Mouf\Database\Dbstats\controllers;
+use Mouf\Controllers\AbstractMoufInstanceController;
+
 /**
  * The controller to generate automatically the stats table.
  * 
