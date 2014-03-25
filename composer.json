@@ -29,7 +29,13 @@
 			"require-admin": [
     			"src/DB_Stats_Admin.php"
     		],
-    		"logo": "database.png"
+    		"logo": "database.png",
+			"doc": [
+	    		{
+	    			"title": "Querying stats tables",
+	    			"url": "doc/DB_Stats_Query.md"
+	    		}
+	    	]
 		}
     }
 }
