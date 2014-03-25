@@ -18,48 +18,54 @@ class DB_Stats implements MoufValidatorInterface {
 	/**
 	 * The connection to the database that contains the table we are working on.
 	 * 
-	 * @Property
-	 * @Compulsory
 	 * @var DB_ConnectionInterface
 	 */
-	public $dbConnection;
+	private $dbConnection;
 	
 	/**
 	 * The source table that will be used to analyse data from.
 	 * 
-	 * @Property
-	 * @Compulsory
 	 * @var string
 	 */
-	public $sourceTable;
+	private $sourceTable;
 	
 	/**
 	 * The table in which aggregated stats data will be written.
 	 *
-	 * @Property
-	 * @Compulsory
 	 * @var string
 	 */
-	public $statsTable;
+	private $statsTable;
 	
 	/**
 	 * An array containing the dimensions of the target table.
 	 * 
-	 * @Property
-	 * @Compulsory
 	 * @var array<DB_Dimension>
 	 */
-	public $dimensions = array();
+	private $dimensions = array();
 	
 	
 	/**
 	 * An array containing the aggregated values of the target table.
 	 * 
-	 * @Property
-	 * @Compulsory
 	 * @var array<DB_StatColumn>
 	 */
-	public $values;
+	private $values;
+	
+	/**
+	 * 
+	 * @param DB_ConnectionInterface $dbConnection The connection to the database that contains the table we are working on.
+	 * @param string $sourceTable The source table that will be used to analyse data from.
+	 * @param string $statsTable The table in which aggregated stats data will be written.
+	 * @param array<DB_Dimension> $dimensions An array containing the dimensions of the target table.
+	 * @param array<DB_StatColumn> $values An array containing the aggregated values of the target table.
+	 */
+	public function __construct(DB_ConnectionInterface $dbConnection, $sourceTable, $statsTable, array $dimensions = array(), array $values = array()){
+		$this->dbConnection = $dbConnection;
+		$this->sourceTable = $sourceTable;
+		$this->statsTable = $statsTable;
+		$this->dimensions = $dimensions;
+		$this->values = $values;
+	}
 	
 	/**
 	 * Creates the stats table directly in the database.
@@ -613,35 +619,6 @@ class DB_Stats implements MoufValidatorInterface {
 		}
 		
 		return $mergedRes;
-	}
-	
-	/**
-	 * Sets the connection to the database.
-	 *
-	 * @param Mouf_DBConnection $dbConnection
-	 */
-	public function setDbConnection(Mouf_DBConnection $dbConnection) {
-		$this->dbConnection = $dbConnection;
-	}
-	
-	/**
-	 * Sets the source table.
-	 * The source table is the table containing the data we compute statistics on.
-	 *
-	 * @param string $sourceTable
-	 */
-	public function setSourceTable($sourceTable) {
-		$this->sourceTable = $sourceTable;
-	}
-	
-	/**
-	 * Sets the stats table.
-	 * The stats table is the table containing the computed statistics.
-	 *
-	 * @param string $statsTable
-	 */
-	public function setStatsTable($statsTable) {
-		$this->statsTable = $statsTable;
 	}
 	
 	/**

@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Mouf": "src/"
+            "Mouf\\Database\\Dbstats": "src/"
         }
     },
     "minimum-stability": "dev",
