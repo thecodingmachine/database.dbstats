@@ -15,7 +15,7 @@ class DB_StatColumn {
 	 * @Compulsory
 	 * @var string
 	 */
-	public $columnName;
+	private $columnName;
 	
 	/**
 	 * The source of the data. This can be the name of a column in the source table, or an SQL expression running on the fields of the source table.
@@ -26,7 +26,7 @@ class DB_StatColumn {
 	 * @Compulsory
 	 * @var string
 	 */
-	public $dataOrigin;
+	private $dataOrigin;
 	
 	/**
 	 * The SQL type of the column. This is used to generate the table dynamically.
@@ -35,7 +35,7 @@ class DB_StatColumn {
 	 * @Compulsory
 	 * @var string
 	 */
-	public $type;
+	private $type;
 	
 	/**
 	 * Sets the name of the column in the stats table.
@@ -47,23 +47,47 @@ class DB_StatColumn {
 	}
 	
 	/**
+	 * Gets the name of the column in the stats table.
+	 * @return string
+	 */
+	public function getColumnName(){
+		return $this->columnName;
+	}
+	
+	/**
 	 * Sets the source of the data. This can be the name of a column in the source table, or an SQL expression running on the fields of the source table.
 	 * IMPORTANT: any column from the original table stated here should start with "[statcol].".
 	 * For instance, instead of writing YEAR(mydate), you would write YEAR([statcol].mydate)
 	 *
-	 * @param string $columnName
+	 * @param string $dataOrigin
 	 */
 	public function setDataOrigin($dataOrigin) {
 		$this->dataOrigin = $dataOrigin;
 	}
 	
 	/**
+	 * Gets the  source of the data
+	 * @return string
+	 */
+	public function getDataOrigin() {
+		return $this->dataOrigin;
+	}
+	
+	/**
 	 * The SQL type of the column. This is used to generate the table dynamically.
 	 *
-	 * @param string $columnName
+	 * @param string $type
 	 */
 	public function setType($type) {
 		$this->type = $type;
+	}
+	
+	/**
+	 * Gets the  SQL type of the column.
+	 * @return string
+	 */
+	public function getType() {
+		return $this->type;
 	}
 	
 	/**

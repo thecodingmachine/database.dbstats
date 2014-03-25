@@ -308,10 +308,7 @@ $conn-&gt;setDbName("myDb");
 $conn-&gt;setUser("root");
 $conn-&gt;connect();
 
-$dbStats = new DB_Stats();
-$dbStats-&gt;setDbConnection($conn);
-$dbStats-&gt;setSourceTable("patients");
-$dbStats-&gt;setStatsTable("patientsrollup");
+$dbStats = new DB_Stats($conn, "patients", "patientsrollup");
 ```
 
 With this piece of code, we create a connection to MySql, we create a Db_Stats object and we connect it to the connection.

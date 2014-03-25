@@ -1,5 +1,10 @@
 <?php
 namespace Mouf\Database\Dbstats\controllers;
+use Mouf\Html\Widgets\MessageService\Service\UserMessageInterface;
+
+use Mouf\InstanceProxy;
+
+use Mouf\Reflection\MoufReflectionProxy;
 use Mouf\Controllers\AbstractMoufInstanceController;
 
 /**
@@ -19,8 +24,8 @@ class DbStatsController extends AbstractMoufInstanceController {
 	public function defaultAction($name, $selfedit="false") {
 		$this->initController($name, $selfedit);
 		
-		$this->template->addContentFile(dirname(__FILE__)."/../views/dbStats.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(__DIR__."/../../../../views/dbStats.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -32,15 +37,13 @@ class DbStatsController extends AbstractMoufInstanceController {
 	 */
 	public function generate($name, $dropIfExist = "false", $selfedit="false") {
 		$this->initController($name, $selfedit);
-						
-		$url = MoufReflectionProxy::getLocalUrlToProject()."plugins/database/dbstats/2.0/direct/generateStatTable.php?name=".urlencode($name)."&selfedit=".$selfedit."&dropIfExist=".$dropIfExist;
-		$response = self::performRequest($url);
+
+		$dbStatsProxy = new InstanceProxy($name, $selfedit == "true");
+		$dbStatsProxy->createStatsTable($dropIfExist == "true");
+		$dbStatsProxy->createTrigger();
 		
-		if (trim($response) != "") {
-			throw new Exception($response);
-		}
-		
-		header("Location: ".ROOT_URL."mouf/instance/?name=".urlencode($name)."&selfedit=".$selfedit);
+		set_user_message("Stats table has been created for instance '$name'", UserMessageInterface::SUCCESS);
+		header("Location: ".ROOT_URL."ajaxinstance/?name=".urlencode($name)."&selfedit=".$selfedit);
 	}
 	
 	/**
@@ -52,8 +55,8 @@ class DbStatsController extends AbstractMoufInstanceController {
 	public function recomputeForm($name, $selfedit="false") {
 		$this->initController($name, $selfedit);
 		
-		$this->template->addContentFile(dirname(__FILE__)."/../views/recompute.php", $this);
-		$this->template->draw();
+		$this->contentBlock->addFile(__DIR__."/../../../../views/recompute.php", $this);
+		$this->template->toHtml();
 	}
 	
 	/**
@@ -66,43 +69,11 @@ class DbStatsController extends AbstractMoufInstanceController {
 	public function recompute($name, $transaction = "false", $selfedit="false") {
 		$this->initController($name, $selfedit);
 
-		MoufProxy::getInstance($name, $selfedit=="true")->fillTable($transaction=="true");
+		$dbStatsProxy = new InstanceProxy($name, $selfedit == "true");
+		$dbStatsProxy->fillTable($transaction=="true");
+		set_user_message("Stats table has been recomputed for instance '$name'", UserMessageInterface::SUCCESS);
 		
-		header("Location: ".ROOT_URL."mouf/instance/?name=".urlencode($name)."&selfedit=".$selfedit);
-	}
-	
-	private static function performRequest($url) {
-		// preparation de l'envoi
-		$ch = curl_init();
-				
-		curl_setopt( $ch, CURLOPT_URL, $url);
-		
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $ch, CURLOPT_POST, FALSE );
-		
-		if( curl_error($ch) ) { 
-			throw new Exception("TODO: texte de l'erreur curl");
-		} else {
-			// Let's forward all cookies so the session in preserved.
-			// Problem: because the session file is locked, we cannot do that without closing the session first
-			session_write_close();
-			
-			$cookieArr = array();
-			foreach ($_COOKIE as $key=>$value) {
-				$cookieArr[] = $key."=".urlencode($value);
-			}
-			$cookieStr = implode("; ", $cookieArr);
-			curl_setopt($ch, CURLOPT_COOKIE, $cookieStr);
-			
-			
-			$response = curl_exec( $ch );
-	
-			// And let's reopen the session...
-			session_start();
-		}
-		curl_close( $ch );
-		
-		return $response;
+		header("Location: ".ROOT_URL."ajaxinstance/?name=".urlencode($name)."&selfedit=".$selfedit);
 	}
 	
 }

@@ -5,18 +5,15 @@ namespace Mouf\Database\Dbstats;
  * This class represents a dimension to analyse the stats table.
  * A dimension is a column, or a list of columns used to analyse data.
  *
- * @Component
  */
 class DB_Dimension {
 	
 	/**
 	 * The list of columns the dimension is made of.
 	 *
-	 * @Property
-	 * @Compulsory
 	 * @var array<DB_StatColumn>
 	 */
-	public $columns = array();
+	private $columns = array();
 	
 	/**
 	 * Sets list of columns the dimension is made of.
@@ -34,6 +31,14 @@ class DB_Dimension {
 	 */
 	public function addColumn(DB_StatColumn $column) {
 		$this->columns[] = $column;
+	}
+	
+	/**
+	 * Gets the list of columns the dimension is made of.
+	 * @return \Mouf\Database\Dbstats\DB_StatColumn[]
+	 */
+	public function getColumns(){
+		return $this->columns;
 	}
 }
 ?>

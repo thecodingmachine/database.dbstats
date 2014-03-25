@@ -10,5 +10,6 @@ MoufUtils::registerMenuItem('dbStatsRecomputeStatAdminSubMenu', 'Recompute stat 
 // Controller declaration
 MoufManager::getMoufManager()->declareComponent('dbStatsAdmin', 'Mouf\\Database\\Dbstats\\controllers\\DbStatsController', true);
 MoufManager::getMoufManager()->bindComponents('dbStatsAdmin', 'template', 'moufTemplate');
+MoufManager::getMoufManager()->bindComponents('dbStatsAdmin', 'contentBlock', 'block.content');
 
 ?>
