@@ -91,7 +91,7 @@ class DB_Stats implements MoufValidatorInterface {
 		$columnsList = array();
 		
 		$dbColumn = new Column();
-		$dbColumn->name = "ID";
+		$dbColumn->name = "id";
 		$dbColumn->type = "BIGINT";
 		$dbColumn->nullable = false;
 		$dbColumn->autoIncrement = true;
