@@ -43,7 +43,7 @@ class DbStatsController extends AbstractMoufInstanceController {
 		$dbStatsProxy->createTrigger();
 		
 		set_user_message("Stats table has been created for instance '$name'", UserMessageInterface::SUCCESS);
-		header("Location: ".ROOT_URL."ajaxinstance/?name=".urlencode($name)."&selfedit=".$selfedit);
+		header("Location: ".ROOT_URL."dbStatsAdmin/recomputeForm?name=".urlencode($name)."&selfedit=".$selfedit);
 	}
 	
 	/**

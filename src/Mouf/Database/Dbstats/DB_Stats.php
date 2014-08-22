@@ -661,9 +661,31 @@ class DB_Stats implements MoufValidatorInterface {
 		$result = $dbConnection->isTableExist($statsTableName);
 		$instanceName = MoufManager::getMoufManager()->findInstanceName($this);
 		if ($result == false) {
-            return new MoufValidatorResult(MoufValidatorResult::ERROR, "<b>DB_Stats: </b>No stats table '$statsTableName' <a href='".MOUF_URL."dbStatsAdmin/?name=".$instanceName."'>click here to create it</a>.");
+            return new MoufValidatorResult(MoufValidatorResult::ERROR, "<b>DB_Stats: </b>No stats table '$statsTableName' <a href='".MOUF_URL."dbStatsAdmin/?name=".$instanceName."' class='btn btn-danger'>Click here to create it</a>.");
         } else {
-            return new MoufValidatorResult(MoufValidatorResult::SUCCESS, "<b>DB_Stats: </b>Stats table '$statsTableName' found.");
+        	/* Test if all required columns exist */
+        	$requiredColumns = array();
+        	$missingColumns = array();
+        	
+        	foreach($this->dimensions as $dimension){
+        		foreach($dimension->getColumns() as $column){
+        			$requiredColumns[] = $column->getColumnName();
+        		}
+        	}
+        	foreach($this->values as $column){
+        		$requiredColumns[] = $column->getColumnName();
+        	}
+        	
+        	foreach($requiredColumns as $columnName){
+        		if($this->dbConnection->checkColumnExist($this->statsTable, $columnName) !== true){
+        			$missingColumns[] = $columnName;
+        		}
+        	}
+        	if($missingColumns){
+        		return new MoufValidatorResult(MoufValidatorResult::ERROR, "<b>DB_Stats: </b>Stat table '$statsTableName' is missing column(s) '".implode(', ', $missingColumns)."' <a href='".MOUF_URL."dbStatsAdmin/?name=".$instanceName."' class='btn btn-danger'>Click here to rebuild the table</a>.");
+        	}else{
+        		return new MoufValidatorResult(MoufValidatorResult::SUCCESS, "<b>DB_Stats: </b>Stats table '$statsTableName' found.");
+        	}
         }
 	}
 }
